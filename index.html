@@ -10,6 +10,9 @@
 
     <h1>SIDDIPET DAILY SALES TOOL</h1>
 
+    <input type="file" id="fileInput" accept=".xlsx">
+    <button onclick="uploadFile()">Upload Excel File</button>
+
     <table id="salesTable">
         <thead>
             <tr>
@@ -18,7 +21,7 @@
                 <th>Product</th>
                 <th>Rate</th>
                 <th>Tons Purchased</th>
-                <th>Amount Paid A/c ($)</th>
+                <th>Amount Paid ($)</th>
                 <th>Amount Paid in Cash ($)</th>
                 <th>Credit ($)</th>
                 <th>Total Sales ($)</th>
@@ -45,7 +48,7 @@
         <label for="dateInput">Date:</label>
         <input type="date" id="dateInput">
 
-        <label for="personInput">Customer:</label>
+        <label for="personInput">CUSTOMER:</label>
         <input type="text" id="personInput">
 
         <label for="productInput">Product:</label>
@@ -64,7 +67,7 @@
         <label for="tonsInput">Tons Purchased:</label>
         <input type="number" id="tonsInput">
 
-        <label for="amountPaidInput">Amount Paid A/c:</label>
+        <label for="amountPaidInput">Amount Paid:</label>
         <input type="number" id="amountPaidInput">
 
         <label for="amountPaidInCashInput">Amount Paid in Cash:</label>
