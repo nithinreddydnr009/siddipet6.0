@@ -30,7 +30,7 @@ function displaySalesData() {
         const totalSaleCell = row.insertCell(8);
 
         if (sale.tons) {
-            tonsCell.textContent = sale.tons;
+            tonsCell.textContent = sale.tons.toFixed(2); // Display tons with 2 decimal places
             totalTons += sale.tons;
         }
 
@@ -59,7 +59,7 @@ function displaySalesData() {
         row.insertCell(9).appendChild(deleteButton);
     });
 
-    totalTonsCell.textContent = totalTons;
+    totalTonsCell.textContent = totalTons.toFixed(2); // Display total tons with 2 decimal places
     totalAmountPaidCell.textContent = totalAmountPaid.toFixed(2);
     totalAmountPaidInCashCell.textContent = totalAmountPaidInCash.toFixed(2);
     totalCreditCell.textContent = totalCredit.toFixed(2);
@@ -102,13 +102,15 @@ function deleteSale(index) {
 }
 
 function downloadBalanceSheet() {
-    const withTotal = [...salesData, { Date: 'TOTAL:', Customer: '', Product: '', Rate: '', tons: document.getElementById('totalTons').textContent, amountPaid: document.getElementById('totalAmountPaid').textContent, amountPaidInCash: document.getElementById('totalAmountPaidInCash').textContent, credit: document.getElementById('totalCredit').textContent, totalSale: document.getElementById('totalSale').textContent }];
+    const withTotal = [...salesData, { Date: 'Total:', Customer: '', Product: '', Rate: '', tons: document.getElementById('totalTons').textContent, amountPaid: document.getElementById('totalAmountPaid').textContent, amountPaidInCash: document.getElementById('totalAmountPaidInCash').textContent, credit: document.getElementById('totalCredit').textContent, totalSale: document.getElementById('totalSale').textContent }];
     
     const worksheet = XLSX.utils.json_to_sheet(withTotal);
-  	const workbook = XLSX.utils.book_new();
+    
+    
+
+    const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Balance_Sheet');
     XLSX.writeFile(workbook, 'balance_sheet.xlsx');
 }
 
 displaySalesData();
-
