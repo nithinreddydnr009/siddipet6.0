@@ -79,6 +79,7 @@ function addSale() {
     if (dateInput && personInput && productInput) {
         const newSale = { Date: dateInput, Customer: personInput, Product: productInput, Rate: rateInput, tons: tonsInput, amountPaid: amountPaidInput, amountPaidInCash: amountPaidInCashInput, credit: creditInput, totalSale: amountPaidInput + amountPaidInCashInput + creditInput };
         salesData.push(newSale);
+	salesData.sort((a, b) => new Date(a.Date) - new Date(b.Date));
         displaySalesData();
 
         document.getElementById('dateInput').value = '';
@@ -106,11 +107,50 @@ function downloadBalanceSheet() {
     
     const worksheet = XLSX.utils.json_to_sheet(withTotal);
     
-    
+   
 
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Balance_Sheet');
     XLSX.writeFile(workbook, 'balance_sheet.xlsx');
 }
 
+function uploadFile() {
+    const fileInput = document.getElementById('fileInput');
+    const file = fileInput.files[0];
+
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const data = new Uint8Array(e.target.result);
+            const workbook = XLSX.read(data, { type: 'array' });
+
+            const sheetName = workbook.SheetNames[0];
+            const worksheet = workbook.Sheets[sheetName];
+
+            const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+            jsonData.shift(); // Remove the header row
+
+            salesData.push(...jsonData.map(row => ({
+                Date: row[0],
+                Customer: row[1],
+                Product: row[2],
+                Rate: row[3],
+                tons: row[4],
+                amountPaid: row[5],
+                amountPaidInCash: row[6],
+                credit: row[7],
+                totalSale: row[8],
+            })));
+
+            displaySalesData();
+        };
+
+        reader.readAsArrayBuffer(file);
+    } else {
+        alert('Please select a valid Excel file.');
+    }
+}
+
 displaySalesData();
+
+
